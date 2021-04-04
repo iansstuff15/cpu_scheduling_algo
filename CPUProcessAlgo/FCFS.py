@@ -73,8 +73,7 @@ for i in range(numOfProcesses):
 for i in range(numOfProcesses-1):
     for j in range(0, numOfProcesses-i-1):
         if process_list[j].getArrivalTime() > process_list[j+1].getArrivalTime():
-            process_list[j], process_list[j +
-                                          1] = process_list[j+1], process_list[j]
+            process_list[j], process_list[j+1] = process_list[j+1], process_list[j]
 
 # PROCESSING OF STARTING TIMES AND COMPLETION TIMES FOR EACH PROCESSES
 # SINCE LIST IS SORTED (ARRIVAL TIME), FIRST PROCESS WILL ALWAYS START WITH TIME ZERO (0)
@@ -110,7 +109,26 @@ print("{}  {:^6}  {:^6}  {:^6}  {:^6}  {:^6}  {:^6}".format(
 for i in range(numOfProcesses):
     print("P{}  {:^5}   {:^5}   {:^5}   {:^5}   {:^5}   {:^5}".format(process_list[i].getProcessID(), process_list[i].getArrivalTime(), process_list[i].getBurstTime(), process_list[i].getStartingTime(), process_list[i].getCompletionTime(), process_list[i].getWaitingTime(), process_list[i].getTurnaroundTime(),
                                                                       ))
+print("===================GANTT CHART======================")
 
+for k in range(0, len(process_list)):
+    print(f"| P{process_list[k].getProcessID()}  \t", end="\t")
+
+print(" ")
+
+flag = False
+for i in range(0, len(process_list) + 1):
+    if flag == False:
+        if process_list[i].getWaitingTime() == 0:
+            print(process_list[i].getWaitingTime(), end="\t")
+            flag = True
+
+    else:
+        print("\t", process_list[i-1].getCompletionTime(), end="\t")
+
+print("")
+    
+    
 # PRINTING OF AVERAGES
 print(f"\nAverage Waiting Time: {ave_wt}ms")
 print(f"Average Turnaround Time: {ave_tat}ms")
