@@ -82,9 +82,13 @@ process_list[0].setCompletionTime(
     process_list[0].getStartingTime() + process_list[0].getBurstTime())
 
 for i in range(1, len(process_list)):
-    process_list[i].setStartingTime(process_list[i-1].getCompletionTime())
-    process_list[i].setCompletionTime(
-        process_list[i].getStartingTime() + process_list[i].getBurstTime())
+    # CONDITION HANDLE IF THERE WILL BE A CASE OF CPU IDLING
+    if process_list[i-1].getCompletionTime() > process_list[i].getArrivalTime():
+        process_list[i].setStartingTime(process_list[i-1].getCompletionTime())
+    else:
+        process_list[i].setStartingTime(process_list[i].getArrivalTime())
+        
+    process_list[i].setCompletionTime(process_list[i].getStartingTime() + process_list[i].getBurstTime())
 
 # INVOKE METHODS computeTurnaroundTime() AND computeWaitingTime()
 # SINCE ALL VARIABLES NEEDED ARE PRESENT FOR COMPUTATION
@@ -119,9 +123,8 @@ print(" ")
 flag = False
 for i in range(0, len(process_list) + 1):
     if flag == False:
-        if process_list[i].getWaitingTime() == 0:
-            print(process_list[i].getWaitingTime(), end="\t")
-            flag = True
+        print(process_list[i].getArrivalTime(), end="\t")
+        flag = True
 
     else:
         print("\t", process_list[i-1].getCompletionTime(), end="\t")
